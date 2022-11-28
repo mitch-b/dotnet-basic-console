@@ -6,14 +6,20 @@ using ConsoleApp.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Identity.Client;
 
 var builder = Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
     {
         services.AddHostedService<WorkerService>();
         services.AddOptions<ConsoleAppSettings>().BindConfiguration(nameof(ConsoleAppSettings));
-
+        services.AddOptions<ConfidentialClientApplicationOptions>().BindConfiguration("AzureAd");
+        services.AddScoped<IClientCredentialService, ClientCredentialService>();
         services.AddScoped<IDemoService, DemoService>();
+        services.AddHttpClient("GraphApi", httpClient =>
+        {
+            httpClient.BaseAddress = new Uri("https://graph.microsoft.com/");
+        });
     })
     .ConfigureAppConfiguration((hostContext, configBuilder) =>
     {

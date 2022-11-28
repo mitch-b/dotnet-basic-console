@@ -6,9 +6,10 @@ Quickly clone this repository to get a .NET 7 console app which:
 
 1. Has dependency injection usage examples ([DemoService](./ConsoleApp/Services/DemoService.cs))
 1. Docker container support
+1. Has GitHub actions to build a container
+1. Example getting AccessToken from Azure AD following client credentials flow (for daemons)
+    * Built-in example assumes Azure App Registration has `Microsoft Graph : User.Read.All` application permission granted.
 1. devcontainer configured - only need container runtime, not dotnet locally installed (TODO)
-1. Has GitHub actions to build a container (TODO)
-1. Has optional [authentication/authorization](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/security?view=aspnetcore-7.0) with Azure AD (TODO)
 
 ## Build & Run Docker container
 
@@ -16,24 +17,4 @@ Quickly clone this repository to get a .NET 7 console app which:
 cd BasicConsole/
 docker build -t dotnet-basic-console:latest .
 docker run --rm dotnet-basic-console:latest
-```
-
-## Renaming from template:
-
-_zsh_ :
-
-```bash
-# TODO
-```
-
-_PowerShell_ :
-
-```powershell
-# TODO
-```
-
-_Bash_ :
-
-```bash
-# TODO
 ```
