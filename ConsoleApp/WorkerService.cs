@@ -14,6 +14,12 @@ namespace ConsoleApp
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
+            var response = await _demoService.MakeGraphApiCall();
+            if (!string.IsNullOrWhiteSpace(response))
+            {
+                Console.WriteLine(response);
+            }
+
             while (true)
             {
                 _demoService.WriteWelcomeMessage();
