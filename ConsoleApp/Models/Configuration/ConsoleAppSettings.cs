@@ -1,7 +1,6 @@
-﻿namespace ConsoleApp.Models.Configuration
+﻿namespace ConsoleApp.Models.Configuration;
+
+public class ConsoleAppSettings
 {
-    public class ConsoleAppSettings
-    {
-        public string? WelcomeMessage { get; set; }
-    }
+    public string? WelcomeMessage { get; set; }
 }

@@ -1,34 +1,27 @@
 ﻿using ConsoleApp.Services;
 using Microsoft.Extensions.Hosting;
 
-namespace ConsoleApp
+namespace ConsoleApp;
+
+internal class WorkerService(IDemoService demoService) : IHostedService
 {
-    internal class WorkerService : IHostedService
-	{
-        private readonly IDemoService _demoService;
+    private readonly IDemoService _demoService = demoService;
 
-		public WorkerService(IDemoService demoService)
-		{
-            _demoService = demoService;
-		}
-
-        public async Task StartAsync(CancellationToken cancellationToken)
+    public async Task StartAsync(CancellationToken cancellationToken)
+    {
+        var response = await _demoService.MakeGraphApiCall();
+        if (!string.IsNullOrWhiteSpace(response))
         {
-            var response = await _demoService.MakeGraphApiCall();
-            if (!string.IsNullOrWhiteSpace(response))
-            {
-                Console.WriteLine(response);
-            }
-
-            while (true)
-            {
-                _demoService.WriteWelcomeMessage();
-                await Task.Delay(3000);
-            }
+            Console.WriteLine(response);
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
-            => Task.CompletedTask;
+        while (true)
+        {
+            _demoService.WriteWelcomeMessage();
+            await Task.Delay(3000);
+        }
     }
-}
 
+    public Task StopAsync(CancellationToken cancellationToken)
+        => Task.CompletedTask;
+}
