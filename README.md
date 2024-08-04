@@ -1,8 +1,8 @@
-# Basic .NET 7 Console App
+# Basic .NET 8 Console App
 
 Yes, there are much less verbose starting projects. No, you do not need all this stuff to play with .NET.
 
-Quickly clone this repository to get a .NET 7 console app which:
+Quickly clone this repository to get a .NET 8 console app which:
 
 1. Has dependency injection usage examples ([DemoService](./ConsoleApp/Services/DemoService.cs))
 1. Docker container support
