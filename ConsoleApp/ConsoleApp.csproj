@@ -7,28 +7,14 @@
     <Nullable>enable</Nullable>
     <UserSecretsId>76f90b9a-27f4-434c-b368-7e103906d0be</UserSecretsId>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Microsoft.Extensions.DependencyInjection" />
-    <None Remove="Microsoft.Extensions.Hosting" />
-    <None Remove="Models\" />
-    <None Remove="Models\Configuration\" />
-    <None Remove="Microsoft.Extensions.Configuration.UserSecrets" />
-    <None Remove="Services\" />
-    <None Remove="Microsoft.Identity.Client.Extensions.Msal" />
-    <None Remove="Microsoft.Extensions.Http" />
-  </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
     <PackageReference Include="Microsoft.Identity.Client.Extensions.Msal" Version="4.62.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="Models\Configuration\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
+  
   <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
