@@ -7,13 +7,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Client;
+using Serilog;
 
 var builder = Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
     {
         services.AddHostedService<WorkerService>();
         services.AddOptions<ConsoleAppSettings>().BindConfiguration(nameof(ConsoleAppSettings));
-        services.AddOptions<ConfidentialClientApplicationOptions>().BindConfiguration("AzureAd");
+        services.AddOptions<ConfidentialClientApplicationOptions>().BindConfiguration("EntraConfig");
         services.AddScoped<IClientCredentialService, ClientCredentialService>();
         services.AddScoped<IDemoService, DemoService>();
         services.AddHttpClient("GraphApi", httpClient =>
@@ -24,6 +25,10 @@ var builder = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration((hostContext, configBuilder) =>
     {
         configBuilder.AddUserSecrets<Program>();
+    })
+    .UseSerilog((context, configuration) =>
+    {
+        configuration.ReadFrom.Configuration(context.Configuration);
     });
 
 using var host = builder.Build();

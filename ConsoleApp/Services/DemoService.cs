@@ -46,7 +46,7 @@ internal class DemoService(ILogger<DemoService> logger,
 
     public void WriteWelcomeMessage()
     {
-        _logger.LogInformation("Saying hello");
-        Console.WriteLine(_consoleAppSettings.Value?.WelcomeMessage);
+        _logger.LogDebug("Saying hello");
+        _logger.LogInformation(_consoleAppSettings.Value?.WelcomeMessage);
     }
 }

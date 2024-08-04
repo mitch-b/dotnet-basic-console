@@ -6,7 +6,7 @@ namespace ConsoleApp.Services;
 
 internal interface IClientCredentialService
 {
-    Task<AuthenticationResult> GetAuthenticationResult(IEnumerable<string>? scopes = null);
+    Task<AuthenticationResult?> GetAuthenticationResult(IEnumerable<string>? scopes = null);
     Task<string> GetAccessToken(IEnumerable<string>? scopes = null);
 }
 
@@ -14,7 +14,7 @@ internal class ClientCredentialService(ILogger<ClientCredentialService> logger,
         IOptions<ConfidentialClientApplicationOptions> confidentialClientApplicationOptions) : IClientCredentialService
 {
     private readonly ILogger<ClientCredentialService> _logger = logger;
-    private readonly IConfidentialClientApplication _confidentialClientApplication = 
+    private readonly IConfidentialClientApplication? _confidentialClientApplication = 
         ConfidentialClientApplicationBuilder
             .CreateWithApplicationOptions(confidentialClientApplicationOptions.Value)
             .Build();
@@ -22,13 +22,21 @@ internal class ClientCredentialService(ILogger<ClientCredentialService> logger,
     public async Task<string> GetAccessToken(IEnumerable<string>? scopes = null)
     {
         var result = await GetAuthenticationResult(scopes);
+        if (result is null)
+        {
+            throw new Exception("Failed to acquire token");
+        }
         return result.AccessToken;
     }
 
-    public async Task<AuthenticationResult> GetAuthenticationResult(IEnumerable<string>? scopes = null)
+    public async Task<AuthenticationResult?> GetAuthenticationResult(IEnumerable<string>? scopes = null)
     {
+        if (_confidentialClientApplication is null)
+        {
+            return null;
+        }
         AuthenticationResult? result = null;
-        scopes ??= new[] { ".default" };
+        scopes ??= [".default"];
         try
         {
             _logger.LogDebug($"Acquiring token with scopes: '{string.Join(" ", scopes)}'");
