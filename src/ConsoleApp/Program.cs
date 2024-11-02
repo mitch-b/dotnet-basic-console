@@ -1,5 +1,5 @@
-﻿// See https://aka.ms/new-console-template for more information
-
+﻿using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using ConsoleApp;
 using ConsoleApp.Models.Configuration;
 using ConsoleApp.Services;
@@ -8,8 +8,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Client;
 using Serilog;
+using OpenTelemetry.Logs;
 
 var builder = Host.CreateDefaultBuilder(args)
+    .ConfigureAppConfiguration((hostContext, configBuilder) =>
+    {
+        configBuilder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+        configBuilder.AddUserSecrets<Program>();
+        configBuilder.AddEnvironmentVariables();
+        configBuilder.AddCommandLine(args);
+    })
     .ConfigureServices((hostContext, services) =>
     {
         services.AddHostedService<WorkerService>();
@@ -21,10 +29,23 @@ var builder = Host.CreateDefaultBuilder(args)
         {
             httpClient.BaseAddress = new Uri("https://graph.microsoft.com/");
         });
-    })
-    .ConfigureAppConfiguration((hostContext, configBuilder) =>
-    {
-        configBuilder.AddUserSecrets<Program>();
+
+        var otlpEndpoint = hostContext.Configuration.GetValue<string>("OpenTelemetry:OtlpEndpoint");
+
+        services.AddOpenTelemetry()
+            .WithTracing(builder =>
+            {
+                builder
+                    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(nameof(ConsoleApp)))
+                    .AddOtlpExporter(options =>
+                    {
+                        options.Endpoint = new Uri(otlpEndpoint);
+                    });
+            })
+            .WithLogging(builder =>
+            {
+                builder.AddConsoleExporter();
+            });
     })
     .UseSerilog((context, configuration) =>
     {

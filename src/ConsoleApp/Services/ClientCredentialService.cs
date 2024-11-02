@@ -15,9 +15,11 @@ internal class ClientCredentialService(ILogger<ClientCredentialService> logger,
 {
     private readonly ILogger<ClientCredentialService> _logger = logger;
     private readonly IConfidentialClientApplication? _confidentialClientApplication = 
-        ConfidentialClientApplicationBuilder
-            .CreateWithApplicationOptions(confidentialClientApplicationOptions.Value)
-            .Build();
+        confidentialClientApplicationOptions?.Value?.ClientId is not null
+            ? ConfidentialClientApplicationBuilder
+                .CreateWithApplicationOptions(confidentialClientApplicationOptions.Value)
+                .Build()
+            : null;
 
     public async Task<string> GetAccessToken(IEnumerable<string>? scopes = null)
     {
