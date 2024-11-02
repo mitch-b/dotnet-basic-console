@@ -1,5 +1,7 @@
 # Basic .NET 9 Console App
 
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/mitch-b/dotnet-basic-console)
+
 Yes, there are much less verbose starting projects. No, you do not need all this stuff to play with .NET.
 
 Quickly clone this repository to get a .NET 9 console app which:
