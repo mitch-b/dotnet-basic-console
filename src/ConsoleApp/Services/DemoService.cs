@@ -6,13 +6,13 @@ using Microsoft.Extensions.Options;
 
 namespace ConsoleApp.Services;
 
-internal interface IDemoService
+public interface IDemoService
 {
     void WriteWelcomeMessage();
     Task<string> MakeGraphApiCall();
 }
 
-internal class DemoService(ILogger<DemoService> logger,
+public class DemoService(ILogger<DemoService> logger,
         IClientCredentialService clientCredentialService,
         IOptions<ConsoleAppSettings> consoleAppSettings,
         IHttpClientFactory httpClientFactory) : IDemoService

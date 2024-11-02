@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Client;
 using Serilog;
 using OpenTelemetry.Logs;
+using BenchmarkDotNet.Running;
 
 var builder = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration((hostContext, configBuilder) =>
@@ -54,4 +55,13 @@ var builder = Host.CreateDefaultBuilder(args)
 
 using var host = builder.Build();
 
-await host.RunAsync();
+var configuration = host.Services.GetRequiredService<IConfiguration>();
+
+if (configuration.GetValue<bool?>("benchmark") == true)
+{
+    BenchmarkRunner.Run<BenchmarkService>();
+}
+else
+{
+    await host.RunAsync();
+}

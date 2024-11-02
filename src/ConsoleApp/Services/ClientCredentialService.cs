@@ -4,13 +4,13 @@ using Microsoft.Identity.Client;
 
 namespace ConsoleApp.Services;
 
-internal interface IClientCredentialService
+public interface IClientCredentialService
 {
     Task<AuthenticationResult?> GetAuthenticationResult(IEnumerable<string>? scopes = null);
     Task<string> GetAccessToken(IEnumerable<string>? scopes = null);
 }
 
-internal class ClientCredentialService(ILogger<ClientCredentialService> logger,
+public class ClientCredentialService(ILogger<ClientCredentialService> logger,
         IOptions<ConfidentialClientApplicationOptions> confidentialClientApplicationOptions) : IClientCredentialService
 {
     private readonly ILogger<ClientCredentialService> _logger = logger;

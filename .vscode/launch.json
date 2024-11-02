@@ -11,6 +11,17 @@
       "cwd": "${workspaceFolder}/src/ConsoleApp",
       "stopAtEntry": false,
       "console": "internalConsole"
+    },
+    {
+      "name": "Benchmark",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build:release",
+      "program": "${workspaceFolder}/src/ConsoleApp/bin/Release/net9.0/ConsoleApp.dll",
+      "args": [ "--benchmark", "true" ],
+      "cwd": "${workspaceFolder}/src/ConsoleApp",
+      "stopAtEntry": false,
+      "console": "internalConsole"
     }
   ]
 }
